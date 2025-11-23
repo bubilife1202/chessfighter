@@ -1,33 +1,21 @@
 import { getWorldById } from '@/data/worlds'
 import ModuleCard from '@/components/ModuleCard'
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
 
 interface WorldDetailPageProps {
   params: Promise<{
-    worldId: string
-  }>
+    worldId?: string
+  } | undefined>
 }
 
 export default async function WorldDetailPage({ params }: WorldDetailPageProps) {
-  const { worldId } = await params
-  const world = getWorldById(worldId)
+  const resolvedParams = await params
+  const worldId = resolvedParams?.worldId
+  const world = typeof worldId === 'string' ? getWorldById(worldId) : undefined
 
   if (!world) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            월드를 찾을 수 없습니다
-          </h1>
-          <Link
-            href="/worlds"
-            className="text-purple-600 hover:text-purple-800 font-medium"
-          >
-            ← 월드맵으로 돌아가기
-          </Link>
-        </div>
-      </div>
-    )
+    notFound()
   }
 
   // TODO: 실제로는 사용자의 완료 모듈을 DB에서 가져와야 함
