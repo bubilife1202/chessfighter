@@ -3,7 +3,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import { Chessboard } from 'react-chessboard'
 import { Chess } from 'chess.js'
-import { Game as ChessEngine } from 'js-chess-engine'
 
 type DifficultyLevel = 'easy' | 'medium' | 'hard'
 

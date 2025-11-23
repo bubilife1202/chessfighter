@@ -9,7 +9,7 @@ export default function Home() {
             ♟️ Chess Quest
           </h1>
           <p className="text-xl text-gray-600">
-            The Grandmaster's Journey
+            The Grandmaster&apos;s Journey
           </p>
           <p className="text-md text-gray-500 mt-2">
             아이의 두뇌를 깨우는 64칸의 모험
