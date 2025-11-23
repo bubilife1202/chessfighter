@@ -74,12 +74,14 @@ export default async function ModuleDetailPage({ params }: ModulePageProps) {
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
-              <button
-                className="mt-4 w-full py-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-60"
-                disabled={module.isLocked}
-              >
-                {module.isLocked ? '잠금 해제 필요' : '모듈 시작하기'}
-              </button>
+              <Link href={module.isLocked ? '#' : `/modules/${module.id}/start`} className="block">
+                <button
+                  className="mt-4 w-full py-3 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-60"
+                  disabled={module.isLocked}
+                >
+                  {module.isLocked ? '잠금 해제 필요' : '모듈 시작하기'}
+                </button>
+              </Link>
               {module.requiredModules && module.requiredModules.length > 0 && (
                 <p className="mt-2 text-xs text-gray-600">이전 모듈 완료 후 시작할 수 있습니다.</p>
               )}
