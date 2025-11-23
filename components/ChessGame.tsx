@@ -1,19 +1,24 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Chessboard } from 'react-chessboard'
 import { Chess } from 'chess.js'
 
 type DifficultyLevel = 'easy' | 'medium' | 'hard'
 
 export default function ChessGame() {
-  const [game, setGame] = useState(new Chess())
-  const [gamePosition, setGamePosition] = useState(game.fen())
+  const [game, setGame] = useState<Chess | null>(null)
+  const [gamePosition, setGamePosition] = useState('start')
   const [moveHistory, setMoveHistory] = useState<string[]>([])
   const [difficulty, setDifficulty] = useState<DifficultyLevel>('medium')
   const [gameStatus, setGameStatus] = useState<string>('')
   const [isThinking, setIsThinking] = useState(false)
   const [boardWidth, setBoardWidth] = useState(550)
+
+  // 클라이언트 사이드에서만 Chess 인스턴스 초기화
+  useEffect(() => {
+    setGame(new Chess())
+  }, [])
 
   // 반응형 보드 크기 설정
   useEffect(() => {
@@ -28,6 +33,8 @@ export default function ChessGame() {
 
   // 게임 상태 체크
   useEffect(() => {
+    if (!game) return
+
     if (game.isCheckmate()) {
       setGameStatus(game.turn() === 'w' ? '흑 승리! 체크메이트!' : '백 승리! 체크메이트!')
     } else if (game.isDraw()) {
@@ -39,38 +46,34 @@ export default function ChessGame() {
     }
   }, [game, gamePosition])
 
-  // AI 수 계산 (간단한 랜덤 선택 방식)
-  const makeAIMove = useCallback(() => {
-    if (game.isGameOver()) return
+  // AI 수 계산
+  const makeAIMove = () => {
+    if (!game || game.isGameOver()) return
 
     setIsThinking(true)
 
-    // AI가 생각하는 것처럼 약간의 딜레이 추가
     setTimeout(() => {
-      const possibleMoves = game.moves()
+      if (!game) return
+
+      const possibleMoves = game.moves({ verbose: true })
 
       if (possibleMoves.length === 0) {
         setIsThinking(false)
         return
       }
 
-      // 난이도에 따른 AI 전략
-      let selectedMove: string
+      let selectedMove
 
       if (difficulty === 'easy') {
         // 쉬움: 완전 랜덤
         selectedMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)]
       } else if (difficulty === 'medium') {
         // 보통: 체크나 캡처를 우선
-        const captureMoves = possibleMoves.filter(move =>
-          game.move({ from: move.slice(0, 2), to: move.slice(2, 4), promotion: 'q' }) &&
-          (game.undo(), move.includes('x'))
-        )
-        const checkMoves = possibleMoves.filter(move => {
-          const testMove = game.move(move)
-          const isCheck = testMove ? game.isCheck() : false
-          game.undo()
-          return isCheck
+        const captureMoves = possibleMoves.filter(m => m.captured)
+        const checkMoves = possibleMoves.filter(m => {
+          const gameCopy = new Chess(game.fen())
+          gameCopy.move(m.san)
+          return gameCopy.isCheck()
         })
 
         if (checkMoves.length > 0) {
@@ -81,14 +84,22 @@ export default function ChessGame() {
           selectedMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)]
         }
       } else {
-        // 어려움: 더 나은 평가 (추후 실제 엔진 통합)
-        selectedMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)]
+        // 어려움: 가치 평가 추가
+        const captureMoves = possibleMoves.filter(m => m.captured)
+        if (captureMoves.length > 0) {
+          selectedMove = captureMoves[Math.floor(Math.random() * captureMoves.length)]
+        } else {
+          selectedMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)]
+        }
       }
 
       try {
-        const move = game.move(selectedMove)
+        const newGame = new Chess(game.fen())
+        const move = newGame.move(selectedMove.san)
+
         if (move) {
-          setGamePosition(game.fen())
+          setGame(newGame)
+          setGamePosition(newGame.fen())
           setMoveHistory(prev => [...prev, move.san])
         }
       } catch (e) {
@@ -97,24 +108,28 @@ export default function ChessGame() {
 
       setIsThinking(false)
     }, 500)
-  }, [game, difficulty])
+  }
 
   // 플레이어의 수
-  const onDrop = useCallback((sourceSquare: string, targetSquare: string) => {
+  const onDrop = (sourceSquare: string, targetSquare: string) => {
+    if (!game) return false
+
     try {
-      const move = game.move({
+      const newGame = new Chess(game.fen())
+      const move = newGame.move({
         from: sourceSquare,
         to: targetSquare,
-        promotion: 'q', // 폰 프로모션 시 항상 퀸으로
+        promotion: 'q',
       })
 
       if (move === null) return false
 
-      setGamePosition(game.fen())
+      setGame(newGame)
+      setGamePosition(newGame.fen())
       setMoveHistory(prev => [...prev, move.san])
 
       // AI 차례
-      if (!game.isGameOver()) {
+      if (!newGame.isGameOver()) {
         setTimeout(() => makeAIMove(), 200)
       }
 
@@ -122,7 +137,7 @@ export default function ChessGame() {
     } catch (e) {
       return false
     }
-  }, [game, makeAIMove])
+  }
 
   // 게임 리셋
   const resetGame = () => {
@@ -135,13 +150,27 @@ export default function ChessGame() {
 
   // 무르기
   const undoMove = () => {
-    if (moveHistory.length < 2) return
+    if (!game || moveHistory.length < 2) return
 
+    const newGame = new Chess(game.fen())
     // 플레이어와 AI 수 둘 다 무르기
-    game.undo()
-    game.undo()
-    setGamePosition(game.fen())
+    newGame.undo()
+    newGame.undo()
+
+    setGame(newGame)
+    setGamePosition(newGame.fen())
     setMoveHistory(prev => prev.slice(0, -2))
+  }
+
+  if (!game) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="text-4xl mb-4">♟️</div>
+          <p className="text-gray-600">게임을 불러오는 중...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
