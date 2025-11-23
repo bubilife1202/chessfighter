@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Chessboard } from 'react-chessboard'
 import { Chess } from 'chess.js'
 
@@ -46,16 +46,15 @@ export default function ChessGame() {
     }
   }, [game, gamePosition])
 
-  // AI 수 계산
-  const makeAIMove = () => {
-    if (!game || game.isGameOver()) return
+  // AI 수 계산 - useCallback으로 최신 game 상태 보장
+  const makeAIMove = useCallback((currentGame: Chess) => {
+    if (!currentGame || currentGame.isGameOver()) return
 
     setIsThinking(true)
 
     setTimeout(() => {
-      if (!game) return
-
-      const possibleMoves = game.moves({ verbose: true })
+      // 최신 game 상태 사용
+      const possibleMoves = currentGame.moves({ verbose: true })
 
       if (possibleMoves.length === 0) {
         setIsThinking(false)
@@ -71,7 +70,7 @@ export default function ChessGame() {
         // 보통: 체크나 캡처를 우선
         const captureMoves = possibleMoves.filter(m => m.captured)
         const checkMoves = possibleMoves.filter(m => {
-          const gameCopy = new Chess(game.fen())
+          const gameCopy = new Chess(currentGame.fen())
           gameCopy.move(m.san)
           return gameCopy.isCheck()
         })
@@ -94,7 +93,8 @@ export default function ChessGame() {
       }
 
       try {
-        const newGame = new Chess(game.fen())
+        // 최신 game 상태에서 AI 수 실행
+        const newGame = new Chess(currentGame.fen())
         const move = newGame.move(selectedMove.san)
 
         if (move) {
@@ -108,10 +108,10 @@ export default function ChessGame() {
 
       setIsThinking(false)
     }, 500)
-  }
+  }, [difficulty])
 
   // 플레이어의 수
-  const onDrop = (sourceSquare: string, targetSquare: string) => {
+  const onDrop = useCallback((sourceSquare: string, targetSquare: string) => {
     if (!game) return false
 
     try {
@@ -124,32 +124,33 @@ export default function ChessGame() {
 
       if (move === null) return false
 
+      // 상태 업데이트
       setGame(newGame)
       setGamePosition(newGame.fen())
       setMoveHistory(prev => [...prev, move.san])
 
-      // AI 차례
+      // AI 차례 - 최신 game 상태 전달!
       if (!newGame.isGameOver()) {
-        setTimeout(() => makeAIMove(), 200)
+        setTimeout(() => makeAIMove(newGame), 200)
       }
 
       return true
     } catch (e) {
       return false
     }
-  }
+  }, [game, makeAIMove])
 
   // 게임 리셋
-  const resetGame = () => {
+  const resetGame = useCallback(() => {
     const newGame = new Chess()
     setGame(newGame)
     setGamePosition(newGame.fen())
     setMoveHistory([])
     setGameStatus('')
-  }
+  }, [])
 
   // 무르기
-  const undoMove = () => {
+  const undoMove = useCallback(() => {
     if (!game || moveHistory.length < 2) return
 
     const newGame = new Chess(game.fen())
@@ -160,7 +161,7 @@ export default function ChessGame() {
     setGame(newGame)
     setGamePosition(newGame.fen())
     setMoveHistory(prev => prev.slice(0, -2))
-  }
+  }, [game, moveHistory])
 
   if (!game) {
     return (
