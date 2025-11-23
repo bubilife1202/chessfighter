@@ -145,7 +145,7 @@ export const world2: World = {
   icon: '🌲',
   totalModules: 5,
   requiredWorldIds: ['world-1'],
-  isLocked: true,
+  isLocked: false,
   modules: [
     {
       id: 'w2-m1',
@@ -164,7 +164,7 @@ export const world2: World = {
       estimatedTime: 15,
       xpReward: 200,
       requiredModules: [],
-      isLocked: true,
+      isLocked: false,
     },
     {
       id: 'w2-m2',
@@ -184,7 +184,7 @@ export const world2: World = {
       estimatedTime: 15,
       xpReward: 200,
       requiredModules: ['w2-m1'],
-      isLocked: true,
+      isLocked: false,
     },
     {
       id: 'w2-m3',
@@ -203,7 +203,7 @@ export const world2: World = {
       estimatedTime: 12,
       xpReward: 200,
       requiredModules: ['w2-m1'],
-      isLocked: true,
+      isLocked: false,
     },
     {
       id: 'w2-m4',
@@ -222,7 +222,7 @@ export const world2: World = {
       estimatedTime: 18,
       xpReward: 250,
       requiredModules: ['w2-m2'],
-      isLocked: true,
+      isLocked: false,
     },
     {
       id: 'w2-m5',
@@ -241,7 +241,7 @@ export const world2: World = {
       estimatedTime: 20,
       xpReward: 300,
       requiredModules: ['w2-m1', 'w2-m2', 'w2-m3', 'w2-m4'],
-      isLocked: true,
+      isLocked: false,
     },
   ],
 }

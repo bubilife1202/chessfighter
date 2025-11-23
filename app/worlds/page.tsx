@@ -208,18 +208,25 @@ export default function WorldsPage() {
           </div>
         </div>
 
-        {/* CTA to Premium */}
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white text-center shadow-2xl">
-          <h3 className="text-2xl md:text-3xl font-bold mb-4">🌟 프리미엄으로 업그레이드하세요</h3>
-          <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
-            모든 월드에 무제한 접근하고, 1:1 코칭과 학부모 대시보드를 받아보세요!
+        {/* Free Access Banner */}
+        <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-8 text-white text-center shadow-2xl">
+          <h3 className="text-2xl md:text-3xl font-bold mb-4">🎉 모든 기능이 완전 무료!</h3>
+          <p className="text-green-100 mb-6 max-w-2xl mx-auto">
+            모든 월드, 모든 모듈에 무제한 접근하세요. 결제 없이 체스 마스터가 될 수 있어요!
           </p>
-          <Link href="/#pricing">
-            <button className="bg-white text-purple-600 font-bold py-4 px-8 rounded-xl hover:bg-yellow-300 hover:text-purple-700 transform hover:scale-105 transition-all duration-300 shadow-2xl">
-              7일 무료 체험 시작
-            </button>
-          </Link>
-          <p className="mt-4 text-sm text-purple-200">언제든 취소 가능 · 환불 보장</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/worlds/world-1">
+              <button className="bg-white text-green-600 font-bold py-4 px-8 rounded-xl hover:bg-yellow-300 hover:text-green-700 transform hover:scale-105 transition-all duration-300 shadow-2xl">
+                🌱 World 1 시작하기
+              </button>
+            </Link>
+            <Link href="/worlds/world-2">
+              <button className="bg-white/20 backdrop-blur-sm text-white font-bold py-4 px-8 rounded-xl hover:bg-white/30 transition-all duration-300 border-2 border-white">
+                🌲 World 2 도전하기
+              </button>
+            </Link>
+          </div>
+          <p className="mt-4 text-sm text-green-100">💚 평생 무료 · 광고 없음 · 신용카드 불필요</p>
         </div>
       </div>
     </div>

@@ -172,55 +172,89 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pricing Section */}
+      {/* Free Access Section */}
       <section id="pricing" className="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-purple-50 to-pink-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
+            <div className="inline-block bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-full text-lg font-bold mb-6 shadow-xl">
+              🎉 완전 무료 공개!
+            </div>
             <h2 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
-              지금 시작하세요
+              모든 기능이 100% 무료입니다
             </h2>
-            <p className="text-lg md:text-xl text-gray-600">
-              먼저 무료로 체험하고, 마음에 들면 업그레이드하세요
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+              결제 없이 모든 월드, 모든 모듈에 무제한 접근하세요.
+              <br />
+              체스 교육의 기회를 모든 아이들에게!
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
-            <PricingCard
-              title="무료 플랜"
-              price="₩0"
-              period="영구 무료"
-              gradient="from-gray-500 to-gray-600"
-              features={[
-                'World 1 (기초 규칙) 전체 무료',
-                'AI 대국 (쉬움 난이도)',
-                '기본 통계 제공',
-                '광고 포함',
-              ]}
-              cta="무료로 시작하기"
-              href="/worlds"
-            />
-            <PricingCard
-              title="프리미엄"
-              price="₩9,900"
-              period="월"
-              gradient="from-purple-600 to-pink-600"
-              isPopular
-              features={[
-                '모든 월드 무제한 접근 (30+ 모듈)',
-                'AI 대국 (모든 난이도)',
-                '학부모 대시보드',
-                '광고 없음',
-                '1:1 코칭 (주 1회)',
-                '수료증 발급',
-              ]}
-              cta="7일 무료 체험 시작"
-              href="/worlds"
-            />
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 border-4 border-purple-500 transform hover:scale-105 transition-all duration-300">
+              <div className="text-center mb-8">
+                <div className="text-6xl mb-4">🎁</div>
+                <h3 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+                  평생 무료 플랜
+                </h3>
+                <div className="flex items-baseline justify-center gap-2 mb-2">
+                  <span className="text-6xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    ₩0
+                  </span>
+                  <span className="text-2xl text-gray-600">영구 무료</span>
+                </div>
+                <p className="text-gray-600">신용카드 불필요 · 가입만으로 모든 기능 이용</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 mb-8">
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <span className="text-green-500 text-2xl flex-shrink-0">✓</span>
+                    <span className="text-gray-700 font-medium">모든 월드 무제한 접근</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-green-500 text-2xl flex-shrink-0">✓</span>
+                    <span className="text-gray-700 font-medium">30+ 학습 모듈 전체 이용</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-green-500 text-2xl flex-shrink-0">✓</span>
+                    <span className="text-gray-700 font-medium">AI 대국 (모든 난이도)</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-green-500 text-2xl flex-shrink-0">✓</span>
+                    <span className="text-gray-700 font-medium">진행도 & 통계 트래킹</span>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <span className="text-green-500 text-2xl flex-shrink-0">✓</span>
+                    <span className="text-gray-700 font-medium">XP & 레벨 시스템</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-green-500 text-2xl flex-shrink-0">✓</span>
+                    <span className="text-gray-700 font-medium">업적 배지 수집</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-green-500 text-2xl flex-shrink-0">✓</span>
+                    <span className="text-gray-700 font-medium">모바일 & 데스크톱</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-green-500 text-2xl flex-shrink-0">✓</span>
+                    <span className="text-gray-700 font-medium">광고 없음!</span>
+                  </div>
+                </div>
+              </div>
+
+              <Link href="/worlds">
+                <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-5 px-8 rounded-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-xl">
+                  🚀 지금 무료로 시작하기
+                </button>
+              </Link>
+            </div>
           </div>
 
-          <div className="text-center mt-8">
-            <p className="text-gray-600">
-              💳 언제든 취소 가능 · 환불 보장 · 안전한 결제
+          <div className="text-center mt-12">
+            <p className="text-gray-600 text-lg">
+              🎓 모든 아이들에게 평등한 교육 기회를 제공합니다
             </p>
           </div>
         </div>
