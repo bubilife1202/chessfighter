@@ -1,0 +1,266 @@
+import { World, Module } from '@/types/curriculum'
+
+// World 1: The Awakening (기초 규칙)
+export const world1: World = {
+  id: 'world-1',
+  worldNumber: 1,
+  title: 'The Awakening',
+  subtitle: '기초 규칙',
+  description: '체스 기물들의 움직임과 승리 조건을 배워보세요',
+  theme: 'from-green-400 to-emerald-600',
+  icon: '🌱',
+  totalModules: 6,
+  isLocked: false,
+  modules: [
+    {
+      id: 'w1-m1',
+      worldId: 'world-1',
+      moduleNumber: 1,
+      title: '룩(Rook)의 직진 본능',
+      subtitle: '직선으로 달리는 성',
+      description: '룩이 어떻게 움직이는지 배우고, 장애물을 피해 별을 모아보세요!',
+      type: 'tutorial',
+      targetPiece: 'rook',
+      objectives: [
+        '룩의 직선 이동 이해하기',
+        '룩으로 상대 기물 잡기',
+        '룩의 공격 범위 파악하기',
+      ],
+      difficulty: 1,
+      estimatedTime: 10,
+      xpReward: 100,
+      isLocked: false,
+    },
+    {
+      id: 'w1-m2',
+      worldId: 'world-1',
+      moduleNumber: 2,
+      title: '비숍(Bishop)의 대각선 춤',
+      subtitle: '대각선 위의 무도가',
+      description: '비숍이 대각선으로 움직이는 방법을 익혀보세요',
+      type: 'tutorial',
+      targetPiece: 'bishop',
+      objectives: [
+        '비숍의 대각선 이동 이해하기',
+        '색깔 타일의 개념 배우기',
+        '비숍으로 기물 잡기',
+      ],
+      difficulty: 1,
+      estimatedTime: 10,
+      xpReward: 100,
+      requiredModules: ['w1-m1'],
+      isLocked: false,
+    },
+    {
+      id: 'w1-m3',
+      worldId: 'world-1',
+      moduleNumber: 3,
+      title: '퀸(Queen)의 절대 권력',
+      subtitle: '가장 강력한 기물',
+      description: '체스판의 여왕, 퀸의 모든 움직임을 마스터하세요',
+      type: 'tutorial',
+      targetPiece: 'queen',
+      objectives: [
+        '퀸의 다방향 이동 이해하기',
+        '퀸의 강력한 공격력 체험하기',
+        '퀸을 효과적으로 사용하기',
+      ],
+      difficulty: 2,
+      estimatedTime: 12,
+      xpReward: 150,
+      requiredModules: ['w1-m1', 'w1-m2'],
+      isLocked: false,
+    },
+    {
+      id: 'w1-m4',
+      worldId: 'world-1',
+      moduleNumber: 4,
+      title: '나이트(Knight)의 점프',
+      subtitle: 'L자 움직임의 마법',
+      description: '나이트의 특별한 L자 움직임으로 장애물을 뛰어넘으세요',
+      type: 'tutorial',
+      targetPiece: 'knight',
+      objectives: [
+        "나이트의 'L'자 이동 패턴 익히기",
+        '기물을 뛰어넘는 능력 이해하기',
+        '나이트 포크 전술 배우기',
+      ],
+      difficulty: 2,
+      estimatedTime: 15,
+      xpReward: 150,
+      requiredModules: ['w1-m2'],
+      isLocked: false,
+    },
+    {
+      id: 'w1-m5',
+      worldId: 'world-1',
+      moduleNumber: 5,
+      title: '폰(Pawn)의 전진과 변신',
+      subtitle: '작지만 위대한 병사',
+      description: '폰의 전진, 잡기, 그리고 프로모션까지 모든 것을 배워보세요',
+      type: 'tutorial',
+      targetPiece: 'pawn',
+      objectives: [
+        '폰의 전진 규칙 이해하기',
+        '폰의 대각선 잡기 배우기',
+        '프로모션(진화) 경험하기',
+      ],
+      difficulty: 2,
+      estimatedTime: 15,
+      xpReward: 150,
+      requiredModules: ['w1-m3'],
+      isLocked: false,
+    },
+    {
+      id: 'w1-m6',
+      worldId: 'world-1',
+      moduleNumber: 6,
+      title: '체크메이트의 맛',
+      subtitle: '승리의 순간',
+      description: '킹을 구석에 몰아넣고 체크메이트하는 기본 패턴을 익히세요',
+      type: 'challenge',
+      targetPiece: 'king',
+      objectives: [
+        '체크와 체크메이트의 차이 이해하기',
+        '백 랭크 메이트 배우기',
+        '간단한 메이트 패턴 마스터하기',
+      ],
+      difficulty: 3,
+      estimatedTime: 20,
+      xpReward: 200,
+      requiredModules: ['w1-m1', 'w1-m2', 'w1-m3', 'w1-m4', 'w1-m5'],
+      isLocked: false,
+    },
+  ],
+}
+
+// World 2: The Tactical Forest (전술의 숲)
+export const world2: World = {
+  id: 'world-2',
+  worldNumber: 2,
+  title: 'The Tactical Forest',
+  subtitle: '전술의 숲',
+  description: '기물을 따내고 이득을 보는 기본 전술을 습득하세요',
+  theme: 'from-amber-400 to-orange-600',
+  icon: '🌲',
+  totalModules: 5,
+  requiredWorldIds: ['world-1'],
+  isLocked: true,
+  modules: [
+    {
+      id: 'w2-m1',
+      worldId: 'world-2',
+      moduleNumber: 1,
+      title: '핀(Pin) - 꼼짝 마라!',
+      subtitle: '기물을 묶어버리기',
+      description: '중요한 기물을 미끼로 상대를 묶어두는 전술을 배워보세요',
+      type: 'tutorial',
+      objectives: [
+        '핀의 개념 이해하기',
+        '절대 핀과 상대 핀 구별하기',
+        '핀을 활용한 기물 획득하기',
+      ],
+      difficulty: 3,
+      estimatedTime: 15,
+      xpReward: 200,
+      requiredModules: [],
+      isLocked: true,
+    },
+    {
+      id: 'w2-m2',
+      worldId: 'world-2',
+      moduleNumber: 2,
+      title: '포크(Fork) - 양수겸장',
+      subtitle: '한 번에 두 마리 토끼 잡기',
+      description: '나이트 포크를 중심으로 동시 공격 전술을 마스터하세요',
+      type: 'tutorial',
+      targetPiece: 'knight',
+      objectives: [
+        '포크의 개념 이해하기',
+        '나이트 포크 익히기',
+        '다른 기물의 포크 활용하기',
+      ],
+      difficulty: 3,
+      estimatedTime: 15,
+      xpReward: 200,
+      requiredModules: ['w2-m1'],
+      isLocked: true,
+    },
+    {
+      id: 'w2-m3',
+      worldId: 'world-2',
+      moduleNumber: 3,
+      title: '스큐어(Skewer) - 꼬치 꿰기',
+      subtitle: '뒤에 있는 기물 노리기',
+      description: '핀의 반대 개념, 앞의 기물을 피하면 뒤가 잡히는 전술',
+      type: 'tutorial',
+      objectives: [
+        '스큐어의 개념 이해하기',
+        '핀과 스큐어의 차이 알기',
+        '스큐어로 기물 이득 보기',
+      ],
+      difficulty: 3,
+      estimatedTime: 12,
+      xpReward: 200,
+      requiredModules: ['w2-m1'],
+      isLocked: true,
+    },
+    {
+      id: 'w2-m4',
+      worldId: 'world-2',
+      moduleNumber: 4,
+      title: '디스커버드 어택 - 숨은 공격',
+      subtitle: '기물을 움직여 뒤의 공격 드러내기',
+      description: '한 기물을 움직여 뒤에 숨어있던 공격수를 드러내는 전술',
+      type: 'tutorial',
+      objectives: [
+        '디스커버드 어택의 원리 이해하기',
+        '디스커버드 체크 활용하기',
+        '이중 공격 만들기',
+      ],
+      difficulty: 4,
+      estimatedTime: 18,
+      xpReward: 250,
+      requiredModules: ['w2-m2'],
+      isLocked: true,
+    },
+    {
+      id: 'w2-m5',
+      worldId: 'world-2',
+      moduleNumber: 5,
+      title: '수비수 제거',
+      subtitle: 'Removing the Defender',
+      description: '수비하는 기물을 먼저 제거하고 본체를 공격하는 전술',
+      type: 'challenge',
+      objectives: [
+        '수비수의 역할 파악하기',
+        '수비수 제거 전술 익히기',
+        '복합 전술 연결하기',
+      ],
+      difficulty: 4,
+      estimatedTime: 20,
+      xpReward: 300,
+      requiredModules: ['w2-m1', 'w2-m2', 'w2-m3', 'w2-m4'],
+      isLocked: true,
+    },
+  ],
+}
+
+// 모든 월드를 배열로 내보내기
+export const allWorlds: World[] = [world1, world2]
+
+// 월드 ID로 찾기
+export const getWorldById = (worldId: string): World | undefined => {
+  return allWorlds.find((world) => world.id === worldId)
+}
+
+// 모듈 ID로 찾기
+export const getModuleById = (moduleId: string): { world: World; module: Module } | undefined => {
+  for (const world of allWorlds) {
+    const module = world.modules.find((m) => m.id === moduleId)
+    if (module) {
+      return { world, module }
+    }
+  }
+  return undefined
+}
